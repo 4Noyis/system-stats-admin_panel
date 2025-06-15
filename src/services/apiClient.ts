@@ -23,7 +23,7 @@ export const getHostDetails = (hostId: string): Promise<HostDetails> => {
 export const getHostMetricHistory = (
   hostId: string,
   metricName: 'cpu_usage_percent' | 'mem_usage_percent' | 'net_upload_bytes_sec' | 'net_download_bytes_sec', // Add more as needed
-  range: string = '1h', // e.g., '1h', '30m'
+  range: string = '30m', // e.g., '1h', '30m'
   aggregate: string = '30s' // e.g., '30s', '1m'
 ): Promise<MetricPoint[]> => {
   return fetchWithErrorHandling<MetricPoint[]>(

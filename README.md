@@ -1,14 +1,34 @@
 # System Stats Admin Panel
 
-**Admin Web Panel (Conceptual - to be fully implemented by the user):**
-- Displays an overview of all monitored hosts and their current status.
-- Provides detailed views for individual hosts, including historical data charts.
+A React-based web admin panel for monitoring system statistics across multiple hosts. This application provides real-time visualization of system metrics including CPU usage, memory consumption, network activity, and process information.
 
-## How it works with Systen Stats Monitoring Project
-1.  **Fetches Data:** A React-based Single Page Application (SPA).
-    - On load, it fetches an overview of all hosts from the server (`/api/dashboard/hosts/overview`).
-    - When a user views a specific host, it fetches detailed metrics (`/api/dashboard/host/:hostId/details`) and historical data for charts (`/api/dashboard/host/:hostId/metrics/:metricName`).
-2.  **Visualizes Data:**
-    - Displays host summaries in cards.
-    - Shows detailed pages with current stats, OS/hardware info, process lists, and time-series charts for CPU, memory, and network usage.
-3.  **Polls for Updates:** Periodically re-fetches data from the server API to keep the displayed metrics relatively up-to-date.
+## Features
+
+- **Host Overview**: Dashboard displaying all monitored hosts and their current status
+- **Detailed Host View**: In-depth metrics for individual hosts with historical charts
+- **Real-time Updates**: Automatic polling to keep metrics current
+- **Responsive Design**: Built with Tailwind CSS for modern UI/UX
+
+## Tech Stack
+
+- **Frontend**: React + TypeScript + Vite
+- **Styling**: Tailwind CSS
+- **API**: REST API integration with Go backend
+- **Build Tool**: Vite with TypeScript support
+
+## Getting Started
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Start development server:
+   ```bash
+   npm run dev
+   ```
+
+3. Build for production:
+   ```bash
+   npm run build
+   ```

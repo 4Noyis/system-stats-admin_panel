@@ -2,6 +2,31 @@
 
 A modern React-based web admin panel for monitoring system statistics across multiple hosts. This application provides real-time visualization of system metrics with a sleek dark theme inspired by shadcn/ui design system.
 
+## Description
+
+This admin panel is the frontend component of a comprehensive system monitoring solution that enables real-time tracking and visualization of server infrastructure. The application connects to a Go-based backend service ([system-stats-monitoring](https://github.com/4Noyis/system-stats-monitoring)) to provide enterprise-grade monitoring capabilities.
+
+### **System Architecture**
+- **Frontend**: React TypeScript SPA (this repository)
+- **Backend**: Go REST API service ([system-stats-monitoring repo](https://github.com/4Noyis/system-stats-monitoring))
+- **Communication**: HTTP REST API with JSON data exchange
+- **Data Flow**: Real-time polling with automatic refresh cycles
+
+### **Use Cases**
+- **DevOps Teams**: Monitor production server health and performance
+- **System Administrators**: Track resource utilization across multiple hosts  
+- **Infrastructure Management**: Centralized dashboard for server fleet monitoring
+- **Performance Analysis**: Historical data visualization for capacity planning
+- **Incident Response**: Quick identification of performance bottlenecks and resource issues
+
+### **Key Capabilities**
+- **Multi-Host Monitoring**: Centralized view of distributed server infrastructure
+- **Real-Time Data**: Live metrics with configurable refresh intervals
+- **Historical Analytics**: Time-series data for trend analysis and forecasting
+- **Resource Tracking**: CPU, memory, disk, and network utilization monitoring
+- **Process Monitoring**: Real-time process list with resource consumption details
+- **Status Management**: Automated health checks with visual status indicators
+
 ![Dashboard Overview](./dashboard.png)
 
 ## Features

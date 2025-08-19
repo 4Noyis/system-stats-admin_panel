@@ -9,21 +9,21 @@ const POLLING_INTERVAL = 10000; // 10 seconds
 const LoadingSpinner: React.FC = () => (
   <div className="flex items-center justify-center min-h-[400px]">
     <div className="flex flex-col items-center space-y-4">
-      <div className="w-8 h-8 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin"></div>
-      <p className="text-gray-600">Loading dashboard...</p>
+      <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary"></div>
+      <p className="text-muted-foreground">Loading dashboard...</p>
     </div>
   </div>
 );
 
 const EmptyState: React.FC = () => (
   <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
-    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-      <svg className="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+      <svg className="h-8 w-8 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
       </svg>
     </div>
-    <h3 className="text-lg font-semibold text-gray-900 mb-2">No hosts found</h3>
-    <p className="text-gray-600 max-w-md">
+    <h3 className="mb-2 text-lg font-semibold">No hosts found</h3>
+    <p className="max-w-md text-muted-foreground">
       No monitored hosts are currently available. Make sure your system monitoring service is running and hosts are properly configured.
     </p>
   </div>
@@ -31,18 +31,18 @@ const EmptyState: React.FC = () => (
 
 const ErrorState: React.FC<{ error: string; onRetry: () => void }> = ({ error, onRetry }) => (
   <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
-    <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mb-4">
-      <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
+      <svg className="h-8 w-8 text-destructive" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
     </div>
-    <h3 className="text-lg font-semibold text-gray-900 mb-2">Connection Error</h3>
-    <p className="text-gray-600 max-w-md mb-4">{error}</p>
+    <h3 className="mb-2 text-lg font-semibold">Connection Error</h3>
+    <p className="mb-4 max-w-md text-muted-foreground">{error}</p>
     <button
       onClick={onRetry}
-      className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+      className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
     >
-      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
       </svg>
       Retry
@@ -57,27 +57,27 @@ const StatsCard: React.FC<{ title: string; value: string | number; description: 
   icon,
   trend
 }) => (
-  <div className="bg-white border border-gray-200 rounded-lg p-6">
+  <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
     <div className="flex items-center justify-between">
       <div className="flex items-center space-x-3">
-        <div className="p-2 bg-blue-100 rounded-lg">
+        <div className="rounded-lg bg-primary/10 p-2">
           {icon}
         </div>
         <div>
-          <h3 className="text-sm font-medium text-gray-600">{title}</h3>
-          <p className="text-2xl font-bold text-gray-900">{value}</p>
+          <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
+          <p className="text-2xl font-bold">{value}</p>
         </div>
       </div>
       {trend && (
         <div className={`flex items-center space-x-1 text-sm ${trend.isPositive ? 'text-green-600' : 'text-red-600'}`}>
-          <svg className={`w-4 h-4 ${trend.isPositive ? 'rotate-0' : 'rotate-180'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className={`h-4 w-4 ${trend.isPositive ? 'rotate-0' : 'rotate-180'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" />
           </svg>
           <span>{Math.abs(trend.value)}%</span>
         </div>
       )}
     </div>
-    <p className="text-xs text-gray-600 mt-2">{description}</p>
+    <p className="mt-2 text-xs text-muted-foreground">{description}</p>
   </div>
 );
 
@@ -130,23 +130,23 @@ export const DashboardOverviewPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">System Monitoring Dashboard</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-3xl font-bold tracking-tight">System Monitoring Dashboard</h1>
+          <p className="text-muted-foreground mt-1">
             Monitor and manage your infrastructure in real-time
           </p>
         </div>
         <div className="flex items-center space-x-4">
           {lastUpdated && (
-            <div className="flex items-center text-sm text-gray-600">
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="flex items-center text-sm text-muted-foreground">
+              <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               Last updated: {lastUpdated.toLocaleTimeString()}
             </div>
           )}
           {error && (
-            <div className="flex items-center text-sm text-yellow-600 bg-yellow-50 px-3 py-1 rounded-full">
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="flex items-center rounded-full bg-yellow-500/10 px-3 py-1 text-sm text-yellow-600">
+              <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               Update failed - showing cached data
@@ -155,9 +155,9 @@ export const DashboardOverviewPage: React.FC = () => {
           <button
             onClick={fetchHosts}
             disabled={loading}
-            className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 border border-gray-200 rounded-md hover:bg-gray-50 transition-colors disabled:opacity-50"
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
           >
-            <svg className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
             Refresh
@@ -173,7 +173,7 @@ export const DashboardOverviewPage: React.FC = () => {
             value={stats.total}
             description="Monitored systems"
             icon={
-              <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-5 w-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
               </svg>
             }
@@ -183,7 +183,7 @@ export const DashboardOverviewPage: React.FC = () => {
             value={stats.online}
             description={`${((stats.online / stats.total) * 100).toFixed(1)}% availability`}
             icon={
-              <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             }
@@ -193,7 +193,7 @@ export const DashboardOverviewPage: React.FC = () => {
             value={`${stats.avgCpu.toFixed(1)}%`}
             description="Across all hosts"
             icon={
-              <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-5 w-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             }
@@ -203,7 +203,7 @@ export const DashboardOverviewPage: React.FC = () => {
             value={`${stats.avgMemory.toFixed(1)}%`}
             description="Memory utilization"
             icon={
-              <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
               </svg>
             }
@@ -217,8 +217,8 @@ export const DashboardOverviewPage: React.FC = () => {
       ) : (
         <>
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-gray-900">Monitored Hosts</h2>
-            <p className="text-sm text-gray-600">
+            <h2 className="text-xl font-semibold">Monitored Hosts</h2>
+            <p className="text-sm text-muted-foreground">
               {hosts.length} host{hosts.length !== 1 ? 's' : ''} found
             </p>
           </div>

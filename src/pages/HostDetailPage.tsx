@@ -45,25 +45,25 @@ const MetricChart: React.FC<{ data: MetricPoint[]; title: string; yAxisLabel: st
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-6">
+    <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-        <div className="text-sm text-gray-600">
+        <h3 className="text-lg font-semibold">{title}</h3>
+        <div className="text-sm text-muted-foreground">
           {data.length > 0 && (
-            <>
+            <React.Fragment key="chart-stats">
               Current: {formatValue(data[data.length - 1]?.value || 0)}
               {data.length > 1 && (
                 <span className="ml-2">
                   Max: {formatValue(maxValue)}
                 </span>
               )}
-            </>
+            </React.Fragment>
           )}
         </div>
       </div>
       
       {data.length === 0 ? (
-        <div className="flex items-center justify-center h-48 text-gray-600">
+        <div className="flex items-center justify-center h-48 text-muted-foreground">
           <div className="text-center">
             <svg className="w-12 h-12 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -75,7 +75,7 @@ const MetricChart: React.FC<{ data: MetricPoint[]; title: string; yAxisLabel: st
         <div className="relative">
           <svg
             viewBox="0 0 400 200"
-            className="w-full h-48 border border-gray-200 rounded bg-gray-50"
+            className="w-full h-48 border rounded bg-muted/20"
             preserveAspectRatio="xMidYMid meet"
           >
             {/* Grid lines */}
@@ -95,7 +95,7 @@ const MetricChart: React.FC<{ data: MetricPoint[]; title: string; yAxisLabel: st
             </defs>
             
             {data.length > 0 && (
-              <>
+              <React.Fragment key={`chart-${title.replace(/\s+/g, '-')}`}>
                 {/* Area fill */}
                 <path
                   d={`${createPath(data)} L 380 180 L 20 180 Z`}
@@ -118,7 +118,7 @@ const MetricChart: React.FC<{ data: MetricPoint[]; title: string; yAxisLabel: st
                   const y = 180 - ((point.value - minValue) / range) * 160;
                   return (
                     <circle
-                      key={index}
+                      key={`${point.timestamp}-${index}`}
                       cx={x}
                       cy={y}
                       r="3"
@@ -129,13 +129,13 @@ const MetricChart: React.FC<{ data: MetricPoint[]; title: string; yAxisLabel: st
                     </circle>
                   );
                 })}
-              </>
+              </React.Fragment>
             )}
           </svg>
           
           {/* X-axis labels */}
           {data.length > 0 && (
-            <div className="flex justify-between mt-2 px-5 text-xs text-gray-500">
+            <div className="flex justify-between mt-2 px-5 text-xs text-muted-foreground">
               <span>{data[0]?.timestamp}</span>
               {data.length > 2 && (
                 <span>{data[Math.floor(data.length / 2)]?.timestamp}</span>
@@ -151,56 +151,56 @@ const MetricChart: React.FC<{ data: MetricPoint[]; title: string; yAxisLabel: st
 
 const ProcessList: React.FC<{ processes: ProcessDetail[] }> = ({ processes }) => {
   const getUsageColor = (percentage: number): string => {
-    if (percentage >= 80) return "text-red-600 bg-red-50";
-    if (percentage >= 60) return "text-yellow-600 bg-yellow-50";
-    return "text-green-600 bg-green-50";
+    if (percentage >= 80) return "text-red-600 bg-red-500/10";
+    if (percentage >= 60) return "text-yellow-600 bg-yellow-500/10";
+    return "text-green-600 bg-green-500/10";
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900">High Usage Processes</h3>
-        <p className="text-sm text-gray-600">Top processes by resource utilization</p>
+    <div className="rounded-lg border bg-card overflow-hidden">
+      <div className="px-6 py-4 border-b">
+        <h3 className="text-lg font-semibold">High Usage Processes</h3>
+        <p className="text-sm text-muted-foreground">Top processes by resource utilization</p>
       </div>
       
       {processes.length === 0 ? (
         <div className="px-6 py-8 text-center">
-          <div className="w-12 h-12 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-            <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-12 h-12 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
+            <svg className="w-6 h-6 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 9a2 2 0 00-2-2m0 0V5a2 2 0 012-2h14a2 2 0 012 2v2M7 7h10" />
             </svg>
           </div>
-          <p className="text-gray-600">No high-usage processes detected</p>
+          <p className="text-muted-foreground">No high-usage processes detected</p>
         </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-muted/50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">PID</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Process Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CPU Usage</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Memory Usage</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">PID</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Process Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">CPU Usage</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Memory Usage</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y">
               {processes.map((proc, index) => (
-                <tr key={proc.pid} className="hover:bg-gray-100 transition-colors">
+                <tr key={`${proc.pid}-${proc.name}-${index}`} className="hover:bg-muted/50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm font-mono text-gray-900">{proc.pid}</span>
+                    <span className="text-sm font-mono">{proc.pid}</span>
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center">
-                      <div className="w-8 h-8 bg-blue-100 rounded-md flex items-center justify-center mr-3">
-                        <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="w-8 h-8 bg-primary/10 rounded-md flex items-center justify-center mr-3">
+                        <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
                         </svg>
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-900 truncate max-w-xs" title={proc.name}>
+                        <p className="text-sm font-medium truncate max-w-xs" title={proc.name}>
                           {proc.name}
                         </p>
-                        <p className="text-xs text-gray-500">Process #{index + 1}</p>
+                        <p className="text-xs text-muted-foreground">Process #{index + 1}</p>
                       </div>
                     </div>
                   </td>
@@ -315,27 +315,34 @@ export const HostDetailPage: React.FC = () => {
 
   if (loading && !details) { // Initial loading state
     return (
-      <div className="container mx-auto p-4 text-center">
-        <p>Loading host details for {hostId}...</p>
-        {/* You can add a spinner component here */}
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary"></div>
+          <p className="text-muted-foreground">Loading host details for {hostId}...</p>
+        </div>
       </div>
     );
   }
 
   if (error && !details) { // Error during initial load
     return (
-      <div className="container mx-auto p-4 text-center text-red-500">
-        <p>Error loading host {hostId}: {error}</p>
-        <Link to="/" className="text-blue-500 hover:underline mt-4 inline-block">Back to Dashboard</Link>
+      <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
+        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
+          <svg className="h-8 w-8 text-destructive" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <p className="mb-4 text-destructive">Error loading host {hostId}: {error}</p>
+        <Link to="/" className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Back to Dashboard</Link>
       </div>
     );
   }
 
   if (!details) { // Host not found or data still unavailable after initial load attempt
     return (
-      <div className="container mx-auto p-4 text-center">
-        <p>Host {hostId} not found or data is currently unavailable.</p>
-        <Link to="/" className="text-blue-500 hover:underline mt-4 inline-block">Back to Dashboard</Link>
+      <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
+        <p className="mb-4 text-muted-foreground">Host {hostId} not found or data is currently unavailable.</p>
+        <Link to="/" className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Back to Dashboard</Link>
       </div>
     );
   }
@@ -344,29 +351,29 @@ export const HostDetailPage: React.FC = () => {
     online: { 
       color: "bg-green-500", 
       textColor: "text-green-700", 
-      bgColor: "bg-green-50 border-green-200"
+      bgColor: "bg-green-500/10 border-green-500/20"
     },
     warning: { 
       color: "bg-yellow-500", 
       textColor: "text-yellow-700", 
-      bgColor: "bg-yellow-50 border-yellow-200"
+      bgColor: "bg-yellow-500/10 border-yellow-500/20"
     },
     offline: { 
       color: "bg-red-500", 
       textColor: "text-red-700", 
-      bgColor: "bg-red-50 border-red-200"
+      bgColor: "bg-red-500/10 border-red-500/20"
     }
   };
 
   const status = statusConfig[details.status as keyof typeof statusConfig] || statusConfig.offline;
 
   const InfoCard: React.FC<{ title: string; icon: React.ReactNode; children: React.ReactNode }> = ({ title, icon, children }) => (
-    <div className="bg-white border border-gray-200 rounded-lg p-6">
+    <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
       <div className="flex items-center mb-4">
-        <div className="p-2 bg-blue-100 rounded-lg mr-3">
+        <div className="p-2 bg-primary/10 rounded-lg mr-3">
           {icon}
         </div>
-        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+        <h3 className="text-lg font-semibold">{title}</h3>
       </div>
       <div className="space-y-2 text-sm">
         {children}
@@ -379,7 +386,7 @@ export const HostDetailPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col space-y-4 md:flex-row md:items-start md:justify-between md:space-y-0">
         <div className="flex-1">
-          <Link to="/" className="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors mb-4">
+          <Link to="/" className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors mb-4">
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
@@ -387,14 +394,14 @@ export const HostDetailPage: React.FC = () => {
           </Link>
           
           <div className="flex items-center space-x-4 mb-2">
-            <h1 className="text-3xl font-bold text-gray-900">{details.hostname}</h1>
+            <h1 className="text-3xl font-bold tracking-tight">{details.hostname}</h1>
             <div className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${status.bgColor} ${status.textColor}`}>
               <span className={`w-2 h-2 rounded-full mr-2 ${status.color}`}></span>
               <span className="capitalize">{details.status}</span>
             </div>
           </div>
           
-          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
             <span>ID: {details.id}</span>
             <span>•</span>
             <span>Last seen: {new Date(details.lastSeen).toLocaleString()}</span>
@@ -402,7 +409,7 @@ export const HostDetailPage: React.FC = () => {
         </div>
         
         {error && (
-          <div className="flex items-center text-sm text-yellow-600 bg-yellow-50 border border-yellow-200 px-3 py-2 rounded-md">
+          <div className="flex items-center text-sm text-yellow-600 bg-yellow-500/10 border border-yellow-500/20 px-3 py-2 rounded-md">
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -416,68 +423,68 @@ export const HostDetailPage: React.FC = () => {
         <InfoCard 
           title="Operating System" 
           icon={
-            <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
             </svg>
           }
         >
-          <div className="flex justify-between"><span className="text-gray-600">Name:</span><span className="font-medium">{details.os?.name || 'N/A'}</span></div>
-          <div className="flex justify-between"><span className="text-gray-600">Version:</span><span className="font-medium">{details.os?.version || 'N/A'}</span></div>
-          <div className="flex justify-between"><span className="text-gray-600">Kernel:</span><span className="font-medium">{details.os?.kernel || 'N/A'}</span></div>
-          <div className="flex justify-between"><span className="text-gray-600">Architecture:</span><span className="font-medium">{details.os?.kernelArch || 'N/A'}</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Name:</span><span className="font-medium">{details.os?.name || 'N/A'}</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Version:</span><span className="font-medium">{details.os?.version || 'N/A'}</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Kernel:</span><span className="font-medium">{details.os?.kernel || 'N/A'}</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Architecture:</span><span className="font-medium">{details.os?.kernelArch || 'N/A'}</span></div>
         </InfoCard>
 
         <InfoCard 
           title="CPU" 
           icon={
-            <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           }
         >
-          <div className="flex justify-between"><span className="text-gray-600">Model:</span><span className="font-medium truncate" title={details.cpu?.model_name}>{details.cpu?.model_name || 'N/A'}</span></div>
-          <div className="flex justify-between"><span className="text-gray-600">Cores:</span><span className="font-medium">{details.cpu?.cores ?? 'N/A'}</span></div>
-          <div className="flex justify-between"><span className="text-gray-600">Current Usage:</span><span className={`font-medium ${(details.cpuUsage ?? 0) >= 80 ? 'text-red-600' : (details.cpuUsage ?? 0) >= 60 ? 'text-yellow-600' : 'text-green-600'}`}>{(details.cpuUsage ?? 0).toFixed(1)}%</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Model:</span><span className="font-medium truncate" title={details.cpu?.model_name}>{details.cpu?.model_name || 'N/A'}</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Cores:</span><span className="font-medium">{details.cpu?.cores ?? 'N/A'}</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Current Usage:</span><span className={`font-medium ${(details.cpuUsage ?? 0) >= 80 ? 'text-red-600' : (details.cpuUsage ?? 0) >= 60 ? 'text-yellow-600' : 'text-green-600'}`}>{(details.cpuUsage ?? 0).toFixed(1)}%</span></div>
         </InfoCard>
         
         <InfoCard 
           title="Memory" 
           icon={
-            <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
             </svg>
           }
         >
-          <div className="flex justify-between"><span className="text-gray-600">Total:</span><span className="font-medium">{(details.memory?.total ?? 0).toFixed(1)} GB</span></div>
-          <div className="flex justify-between"><span className="text-gray-600">Used:</span><span className="font-medium">{(details.memory?.used ?? 0).toFixed(1)} GB</span></div>
-          <div className="flex justify-between"><span className="text-gray-600">Available:</span><span className="font-medium">{(details.memory?.free ?? 0).toFixed(1)} GB</span></div>
-          <div className="flex justify-between"><span className="text-gray-600">Usage:</span><span className={`font-medium ${(details.ramUsage ?? 0) >= 80 ? 'text-red-600' : (details.ramUsage ?? 0) >= 60 ? 'text-yellow-600' : 'text-green-600'}`}>{(details.ramUsage ?? 0).toFixed(1)}%</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Total:</span><span className="font-medium">{(details.memory?.total ?? 0).toFixed(1)} GB</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Used:</span><span className="font-medium">{(details.memory?.used ?? 0).toFixed(1)} GB</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Available:</span><span className="font-medium">{(details.memory?.free ?? 0).toFixed(1)} GB</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Usage:</span><span className={`font-medium ${(details.ramUsage ?? 0) >= 80 ? 'text-red-600' : (details.ramUsage ?? 0) >= 60 ? 'text-yellow-600' : 'text-green-600'}`}>{(details.ramUsage ?? 0).toFixed(1)}%</span></div>
         </InfoCard>
 
         <InfoCard 
           title="Disk Storage" 
           icon={
-            <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
             </svg>
           }
         >
-          <div className="flex justify-between"><span className="text-gray-600">Path:</span><span className="font-medium">{details.disk?.path || '/'}</span></div>
-          <div className="flex justify-between"><span className="text-gray-600">Total:</span><span className="font-medium">{(details.disk?.total_gb ?? 0).toFixed(1)} GB</span></div>
-          <div className="flex justify-between"><span className="text-gray-600">Free:</span><span className="font-medium">{(details.disk?.free_gb ?? 0).toFixed(1)} GB</span></div>
-          <div className="flex justify-between"><span className="text-gray-600">Usage:</span><span className={`font-medium ${(details.disk?.usage_percent ?? 0) >= 80 ? 'text-red-600' : (details.disk?.usage_percent ?? 0) >= 60 ? 'text-yellow-600' : 'text-green-600'}`}>{(details.disk?.usage_percent ?? 0).toFixed(1)}%</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Path:</span><span className="font-medium">{details.disk?.path || '/'}</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Total:</span><span className="font-medium">{(details.disk?.total_gb ?? 0).toFixed(1)} GB</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Free:</span><span className="font-medium">{(details.disk?.free_gb ?? 0).toFixed(1)} GB</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Usage:</span><span className={`font-medium ${(details.disk?.usage_percent ?? 0) >= 80 ? 'text-red-600' : (details.disk?.usage_percent ?? 0) >= 60 ? 'text-yellow-600' : 'text-green-600'}`}>{(details.disk?.usage_percent ?? 0).toFixed(1)}%</span></div>
         </InfoCard>
 
         <InfoCard 
           title="Network Activity" 
           icon={
-            <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
             </svg>
           }
         >
           <div className="flex justify-between">
-            <span className="text-gray-600 flex items-center">
+            <span className="text-muted-foreground flex items-center">
               <svg className="w-3 h-3 mr-1 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" />
               </svg>
@@ -486,7 +493,7 @@ export const HostDetailPage: React.FC = () => {
             <span className="font-medium">{formatNetworkSpeed(details.networkUpload)}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600 flex items-center">
+            <span className="text-muted-foreground flex items-center">
               <svg className="w-3 h-3 mr-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 13l-5 5m0 0l-5-5m5 5V6" />
               </svg>
@@ -500,30 +507,34 @@ export const HostDetailPage: React.FC = () => {
       {/* Charts Section */}
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-semibold text-gray-900">Performance Metrics</h2>
-          <p className="text-sm text-gray-600">Last hour</p>
+          <h2 className="text-2xl font-semibold">Performance Metrics</h2>
+          <p className="text-sm text-muted-foreground">Last hour</p>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <MetricChart 
+            key="cpu-chart"
             data={cpuHistory} 
             title="CPU Usage" 
             yAxisLabel="CPU Usage (%)" 
             color="rgb(59, 130, 246)" 
           />
           <MetricChart 
+            key="memory-chart"
             data={memHistory} 
             title="Memory Usage" 
             yAxisLabel="Memory Usage (%)" 
             color="rgb(168, 85, 247)" 
           />
           <MetricChart 
+            key="network-upload-chart"
             data={netUpHistory} 
             title="Network Upload" 
             yAxisLabel="Upload (B/s)" 
             color="rgb(34, 197, 94)" 
           />
           <MetricChart 
+            key="network-download-chart"
             data={netDownHistory} 
             title="Network Download" 
             yAxisLabel="Download (B/s)" 

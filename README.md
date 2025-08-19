@@ -76,38 +76,49 @@ This admin panel is the frontend component of a comprehensive system monitoring 
 
 ### Prerequisites
 - Node.js 18+ and npm
-- Go backend server running on `http://localhost:8080`
+- Go backend server from [system-stats-monitoring](https://github.com/berenalp/system-stats-monitoring) repository
+- Backend running on `http://localhost:8080` (configurable)
 
-### Installation
+### Complete System Setup
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd system-stats-admin_panel
-   ```
+#### 1. **Backend Setup** (Required First)
+```bash
+# Clone and setup the Go backend
+git clone https://github.com/berenalp/system-stats-monitoring.git
+cd system-stats-monitoring
+# Follow backend setup instructions in its README
+go run main.go  # Backend will run on :8080
+```
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+#### 2. **Frontend Setup** (This Repository)
+```bash
+# Clone the frontend repository
+git clone <this-repository-url>
+cd system-stats-admin_panel
 
-3. **Start development server**
-   ```bash
-   npm run dev
-   ```
-   The application will be available at `http://localhost:5173`
+# Install dependencies
+npm install
 
-4. **Build for production**
-   ```bash
-   npm run build
-   ```
+# Start development server
+npm run dev
+```
+The application will be available at `http://localhost:5173`
 
-5. **Preview production build**
-   ```bash
-   npm run preview
-   ```
+#### 3. **Production Build**
+```bash
+# Build for production
+npm run build
 
-## 🏗️ Architecture
+# Preview production build
+npm run preview
+```
+
+### Quick Start (Development)
+1. Start the Go backend server first (port 8080)
+2. Start the React frontend (port 5173)
+3. Open `http://localhost:5173` in your browser
+
+## Architecture
 
 ### Project Structure
 ```
@@ -134,7 +145,7 @@ src/
 - **Responsive Design**: Mobile-first approach with Tailwind CSS
 - **Performance Optimized**: Efficient re-renders with React best practices
 
-## 🎯 Usage
+## Usage
 
 ### Dashboard Navigation
 1. **Main Dashboard**: View all monitored hosts at a glance
@@ -143,12 +154,23 @@ src/
 4. **Back Navigation**: Easy navigation between views
 
 ### API Integration
-The frontend connects to a Go backend API at:
-- Base URL: `http://localhost:8080/api/dashboard`
-- Endpoints:
-  - `GET /hosts/overview` - Host summary data
-  - `GET /host/{id}/details` - Detailed host information
-  - `GET /host/{id}/metrics/{metric}` - Historical metrics
+The frontend connects to the Go backend service ([system-stats-monitoring](https://github.com/berenalp/system-stats-monitoring)):
+
+- **Base URL**: `http://localhost:8080/api/dashboard`
+- **Authentication**: None (configurable in backend)
+- **Data Format**: JSON with TypeScript interfaces matching Go models
+
+#### API Endpoints:
+- `GET /hosts/overview` - Retrieve all monitored hosts with current metrics
+- `GET /host/{id}/details` - Get detailed information for a specific host
+- `GET /host/{id}/metrics/{metric}` - Fetch historical time-series data
+  - Supported metrics: `cpu_usage_percent`, `mem_usage_percent`, `net_upload_bytes_sec`, `net_download_bytes_sec`
+  - Query parameters: `range` (1h, 30m, etc.), `aggregate` (30s, 1m, etc.)
+
+#### Error Handling:
+- Graceful degradation when backend is unavailable
+- Cached data display with error indicators
+- Automatic retry mechanisms with exponential backoff
 
 ## Development
 
